@@ -1,0 +1,106 @@
+START -> DEFINES
+
+
+
+DEFINES -> GDEFINE ';' DEFINES
+         | GDEFINE
+         | e
+
+GDEFINE -> DEFINE_TYPE
+	 | DEFINE_FUNC
+
+FDEFINE -> BLOCK_LET
+         | BLOCK_IF
+	 | EXPR
+
+
+
+DEFINE_TYPE -> ID '::' ASEQUENCE_TYPE
+
+ID -> 'id'
+
+ASEQUENCE_TYPE -> TYPE
+                | TYPE '->' ASEQUENCE_TYPE
+
+TYPE -> TYPE_SCALAR
+      | TYPE_STRUCT
+
+TYPE_SCALAR -> 'Int'
+	     | 'Bool'
+
+TYPE_STRUCT -> TYPE_LIST
+	     | TYPE_TUPLE
+
+TYPE_LIST -> '[' TYPE_SCALAR ']'
+
+TYPE_TUPLE -> '(' CSEQUENCE_TYPE ')'
+
+CSEQUENCE_TYPE -> TYPE
+                | TYPE ',' CSEQUENCE_TYPE
+
+
+
+DEFINE_FUNC -> ID SEQUENCE_VARG '=' FDEFINE
+
+SEQUENCE_VARG -> e 
+	       | ID
+	       | ID SEQUENCE_VARG
+
+
+
+BLOCK_LET -> 'let' DEFINE_FUNC 'in' FDEFINE
+
+
+
+BLOCK_IF -> 'if' EXPR_BOOL 'then' EXPR 'else' EXPR
+
+EXPR_BOOL -> CMP
+	   | CMP OPERATION_LOGIC EXPR_BOOL
+
+CMP -> EXPR OPERATION_CMP EXPR
+
+OPERATION_CMP -> '<'
+	       | '>'
+	       | '='
+	       | '/='
+
+OPERATION_LOGIC -> '&&'
+		 | '||'
+
+
+
+EXPR -> OPERAND OPERATION_ARITHMETIC EXPR
+      | OPERAND
+
+OPERAND -> CONST
+	 | ID
+	 | FUNC_CALL
+
+OPERATION_ARITHMETIC -> '+'
+		      | '-'
+		      | '/'
+		      | '*'
+
+CONST -> CONST_INT
+       | CONST_BOOL
+       | CONST_LIST
+       | CONST_TUPLE
+
+CONST_INT -> 'int value'
+
+CONST_BOOL -> 'bool value'
+
+CONST_LIST -> 'list value'
+
+CONST_TUPLE -> 'tuple value'
+
+FUNC_CALL -> ID SEQUENCE_ARG
+
+SEQUENCE_ARG -> ID
+	      | ID ' ' SEQUENCE_ARG
+	      | CONST
+	      | CONST ' ' SEQUENCE_ARG
+	      | FUNC_CALL
+	      | FUNC CALL ' ' SEQUENCE_ARG
+
+
