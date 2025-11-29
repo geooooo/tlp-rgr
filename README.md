@@ -1,1 +1,1 @@
-# РГР по ТЯП 31-ПГ
+# University practice for theory of programming languages, 31PG group
